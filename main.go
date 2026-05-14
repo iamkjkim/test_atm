@@ -6,7 +6,7 @@ import (
 )
 
 type Card struct {
-	Name   string
+	Name   string // name is trivial for now
 	Number string // card number
 }
 
@@ -14,6 +14,7 @@ type Account struct {
 	Number string // account number
 }
 
+// assume the user has a card associated with multiple accounts
 type UserInfo struct {
 	PIN      int16
 	Accounts []*Account
@@ -44,7 +45,7 @@ type DB struct {
 	AccountAmount map[string]int64
 }
 
-// a customer inserts his/her card and retrieves his/her assocciated accounts for selection
+// a customer inserts his/her card and retrieves his/her associated accounts for selection
 func (d *DB) VerifyPIN(card *Card, pin int16) ([]*Account, error) {
 	if c, ok := d.CardHolder[card.Number]; !ok {
 		return nil, fmt.Errorf("card not found")
@@ -80,6 +81,7 @@ var dummyDB *DB
 
 // package initializer
 func init() {
+	// dummy DB to ease unit tests
 	dummyDB = &DB{
 		CardHolder: map[string]*UserInfo{
 			"321": {
